@@ -586,8 +586,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CorridorEncounter
   corridorNumber: 1
-  collectExpected: 1
-  enemyCubePrefab: {fileID: 1000000000000000001, guid: b42559ed6c0040b790b9d4bd3617077a, type: 3}
+  isDifferent: 0
   brickWallPrefab: {fileID: 986428470146036387, guid: 5d148045b6a98ae4794705cb9a205b66, type: 3}
 --- !u!1001 &46617351046289290
 PrefabInstance:

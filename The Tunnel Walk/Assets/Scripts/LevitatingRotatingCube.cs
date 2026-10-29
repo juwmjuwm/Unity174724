@@ -28,7 +28,7 @@ public class LevitatingRotatingCube : MonoBehaviour
         {
             CorridorEncounter corridor = GetComponentInParent<CorridorEncounter>();
             if (corridor != null)
-                corridor.MarkCollected();
+                corridor.MarkCollected(other.transform);
 
             Destroy(gameObject);
         }
