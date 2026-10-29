@@ -806,16 +806,16 @@ PrefabInstance:
       propertyPath: isDifferent
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7707810491102661933, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
-      propertyPath: cubeColors.Array.data[0].r
+    - target: {fileID: 7294516669235273241, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
+      propertyPath: differentPaintingColor.r
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7707810491102661933, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
-      propertyPath: cubeColors.Array.data[0].g
+    - target: {fileID: 7294516669235273241, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
+      propertyPath: differentPaintingColor.g
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7707810491102661933, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
-      propertyPath: cubeColors.Array.data[0].b
+    - target: {fileID: 7294516669235273241, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
+      propertyPath: differentPaintingColor.b
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7640575069616432690, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
@@ -1381,16 +1381,16 @@ PrefabInstance:
       propertyPath: isDifferent
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7707810491102661933, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
-      propertyPath: cubeColors.Array.data[0].r
+    - target: {fileID: 7294516669235273241, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
+      propertyPath: differentPaintingColor.r
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7707810491102661933, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
-      propertyPath: cubeColors.Array.data[0].g
+    - target: {fileID: 7294516669235273241, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
+      propertyPath: differentPaintingColor.g
       value: 0.45
       objectReference: {fileID: 0}
-    - target: {fileID: 7707810491102661933, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
-      propertyPath: cubeColors.Array.data[0].b
+    - target: {fileID: 7294516669235273241, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
+      propertyPath: differentPaintingColor.b
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7640575069616432690, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
@@ -1466,16 +1466,16 @@ PrefabInstance:
       propertyPath: isDifferent
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7707810491102661933, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
-      propertyPath: cubeColors.Array.data[0].r
+    - target: {fileID: 7294516669235273241, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
+      propertyPath: differentPaintingColor.r
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7707810491102661933, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
-      propertyPath: cubeColors.Array.data[0].g
+    - target: {fileID: 7294516669235273241, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
+      propertyPath: differentPaintingColor.g
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7707810491102661933, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
-      propertyPath: cubeColors.Array.data[0].b
+    - target: {fileID: 7294516669235273241, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
+      propertyPath: differentPaintingColor.b
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7640575069616432690, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
@@ -1608,16 +1608,16 @@ PrefabInstance:
       propertyPath: isDifferent
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7707810491102661933, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
-      propertyPath: cubeColors.Array.data[0].r
+    - target: {fileID: 7294516669235273241, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
+      propertyPath: differentPaintingColor.r
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7707810491102661933, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
-      propertyPath: cubeColors.Array.data[0].g
+    - target: {fileID: 7294516669235273241, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
+      propertyPath: differentPaintingColor.g
       value: 0.15
       objectReference: {fileID: 0}
-    - target: {fileID: 7707810491102661933, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
-      propertyPath: cubeColors.Array.data[0].b
+    - target: {fileID: 7294516669235273241, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}
+      propertyPath: differentPaintingColor.b
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7640575069616432690, guid: b04ecf8d87118e64297d7028bcbde154, type: 3}

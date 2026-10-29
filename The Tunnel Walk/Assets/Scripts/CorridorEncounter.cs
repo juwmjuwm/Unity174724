@@ -1,17 +1,92 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CorridorEncounter : MonoBehaviour
 {
     [Min(1)] [SerializeField] private int corridorNumber = 1;
     [SerializeField] private bool isDifferent;
+    [SerializeField] private Color differentPaintingColor = Color.white;
     [SerializeField] private GameObject brickWallPrefab;
 
     private static CorridorEncounter currentCorridor;
+    private static readonly HashSet<int> differentPaintingIndices = new HashSet<int>();
     public static int CurrentLevelNumber { get; private set; }
     private bool collected;
     private bool entered;
     private bool wallPending;
     private float entranceSide;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetRunState()
+    {
+        currentCorridor = null;
+        differentPaintingIndices.Clear();
+        CurrentLevelNumber = 0;
+    }
+
+    private void Awake()
+    {
+        if (!isDifferent)
+            return;
+
+        PaintingColorManager painting = GetComponent<PaintingColorManager>();
+        if (painting == null)
+        {
+            Debug.LogWarning("Painting colors are missing on " + name, this);
+            return;
+        }
+
+        int count = Mathf.Min(painting.cubes.Count, painting.cubeColors.Count);
+        int candidates = 0;
+        for (int i = 0; i < count; i++)
+        {
+            if (painting.cubes[i] != null && !differentPaintingIndices.Contains(i) &&
+                IsNoticeablyDifferent(painting.cubeColors[i], differentPaintingColor))
+                candidates++;
+        }
+
+        // Reuse an index only if every suitable painting was already chosen.
+        bool reuseIndex = false;
+        if (candidates == 0)
+        {
+            reuseIndex = true;
+            for (int i = 0; i < count; i++)
+            {
+                if (painting.cubes[i] != null && IsNoticeablyDifferent(painting.cubeColors[i], differentPaintingColor))
+                    candidates++;
+            }
+
+            if (candidates == 0)
+            {
+                Debug.LogWarning("No painting can display a different color on " + name, this);
+                return;
+            }
+        }
+
+        int selected = Random.Range(0, candidates);
+        for (int i = 0; i < count; i++)
+        {
+            if (painting.cubes[i] == null || !IsNoticeablyDifferent(painting.cubeColors[i], differentPaintingColor) ||
+                (!reuseIndex && differentPaintingIndices.Contains(i)))
+                continue;
+
+            if (selected-- != 0)
+                continue;
+
+            painting.cubeColors[i] = differentPaintingColor;
+            painting.ApplyColors();
+            differentPaintingIndices.Add(i);
+            break;
+        }
+    }
+
+    private static bool IsNoticeablyDifferent(Color original, Color changed)
+    {
+        float red = original.r - changed.r;
+        float green = original.g - changed.g;
+        float blue = original.b - changed.b;
+        return red * red + green * green + blue * blue > 0.25f;
+    }
 
     public void MarkCollected(Transform player)
     {
