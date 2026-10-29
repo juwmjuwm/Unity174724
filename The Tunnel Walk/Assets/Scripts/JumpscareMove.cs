@@ -12,11 +12,32 @@ public class JumpscareMove : MonoBehaviour
 
     private static readonly Vector3 ModelCenterOffset = new Vector3(0.65f, 0f, -0.75f);
 
+    private static JumpscareMove instance;
+    private bool running;
     private bool triggered;
     private VideoPlayer videoPlayer;
     private AudioSource audioSource;
     private RenderTexture renderTexture;
     private bool videoFinished;
+
+    private void Awake()
+    {
+        instance = this;
+        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
+            renderer.enabled = false;
+    }
+
+    public static void RunAtPlayer(Transform target, Vector3 corridorEnd)
+    {
+        if (instance == null || instance.running || target == null)
+            return;
+
+        instance.player = target;
+        instance.transform.position = corridorEnd;
+        instance.running = true;
+        foreach (Renderer renderer in instance.GetComponentsInChildren<Renderer>())
+            renderer.enabled = true;
+    }
 
     void Start()
     {
@@ -89,7 +110,7 @@ public class JumpscareMove : MonoBehaviour
 
     void Update()
     {
-        if (triggered || player == null)
+        if (!running || triggered || player == null)
             return;
 
         Vector3 targetPosition = new Vector3(player.position.x, transform.position.y, player.position.z);
@@ -114,7 +135,7 @@ public class JumpscareMove : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!triggered && IsPlayerCollider(other))
+        if (running && !triggered && IsPlayerCollider(other))
         {
             TriggerJumpscare();
         }
@@ -122,7 +143,7 @@ public class JumpscareMove : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!triggered && IsPlayerCollider(collision.collider))
+        if (running && !triggered && IsPlayerCollider(collision.collider))
         {
             TriggerJumpscare();
         }
@@ -231,6 +252,9 @@ public class JumpscareMove : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (instance == this)
+            instance = null;
+
         if (videoPlayer != null)
         {
             videoPlayer.loopPointReached -= OnVideoFinished;

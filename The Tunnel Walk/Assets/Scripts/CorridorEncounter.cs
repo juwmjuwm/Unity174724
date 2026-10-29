@@ -3,8 +3,7 @@ using UnityEngine;
 public class CorridorEncounter : MonoBehaviour
 {
     [Min(1)] [SerializeField] private int corridorNumber = 1;
-    [SerializeField] private bool collectExpected = true;
-    [SerializeField] private GameObject enemyCubePrefab;
+    [SerializeField] private bool isDifferent;
     [SerializeField] private GameObject brickWallPrefab;
 
     private static CorridorEncounter currentCorridor;
@@ -14,9 +13,14 @@ public class CorridorEncounter : MonoBehaviour
     private bool wallPending;
     private float entranceSide;
 
-    public void MarkCollected()
+    public void MarkCollected(Transform player)
     {
+        if (collected)
+            return;
+
         collected = true;
+        if (!isDifferent)
+            JumpscareMove.RunAtPlayer(player, JumpscareSpawnPosition());
     }
 
     public void Enter(Collider player)
@@ -39,18 +43,21 @@ public class CorridorEncounter : MonoBehaviour
             return;
 
         entered = true;
+        entranceSide = Mathf.Sign(transform.InverseTransformPoint(player.transform.position).x);
         if (previousCorridor != null)
         {
-            entranceSide = Mathf.Sign(transform.InverseTransformPoint(player.transform.position).x);
             wallPending = true;
             TryPlaceEntranceWall(player.transform.position);
         }
 
-        if (previousCorridor != null &&
-            previousCorridor.collectExpected != previousCorridor.collected)
-        {
-            SpawnEnemyAtEntrance(player.transform.position);
-        }
+        if (previousCorridor != null && previousCorridor.isDifferent && !previousCorridor.collected)
+            JumpscareMove.RunAtPlayer(player.transform, JumpscareSpawnPosition());
+    }
+
+    private Vector3 JumpscareSpawnPosition()
+    {
+        // The corridor runs along local X. The threat emerges from its far end.
+        return transform.TransformPoint(new Vector3(-entranceSide * 45f, 4f, 0f));
     }
 
     private void TryPlaceEntranceWall(Vector3 playerPosition)
@@ -73,22 +80,6 @@ public class CorridorEncounter : MonoBehaviour
         GameObject wall = Instantiate(brickWallPrefab, transform);
         wall.transform.localPosition = new Vector3(entranceSide * 50.5f, 6f, 0f);
         wall.transform.localRotation = Quaternion.identity;
-    }
-
-    private void SpawnEnemyAtEntrance(Vector3 playerPosition)
-    {
-        if (enemyCubePrefab == null)
-        {
-            Debug.LogWarning("EnemyCube prefab is missing on " + name, this);
-            return;
-        }
-
-        Vector3 playerLocalPosition = transform.InverseTransformPoint(playerPosition);
-        float entranceSide = playerLocalPosition.x >= 0f ? 1f : -1f;
-        Vector3 localPosition = new Vector3(entranceSide * 45f, 2f, 0f);
-        GameObject enemy = Instantiate(enemyCubePrefab, transform);
-        enemy.transform.localPosition = localPosition;
-        enemy.transform.localRotation = Quaternion.identity;
     }
 
     private void OnDestroy()
