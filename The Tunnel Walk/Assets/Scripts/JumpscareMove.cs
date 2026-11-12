@@ -13,12 +13,16 @@ public class JumpscareMove : MonoBehaviour
     private static readonly Vector3 ModelCenterOffset = new Vector3(0.65f, 0f, -0.75f);
 
     private static JumpscareMove instance;
+    public static bool IsTriggered => instance != null && instance.triggered;
     private bool running;
     private bool triggered;
     private VideoPlayer videoPlayer;
     private AudioSource audioSource;
     private RenderTexture renderTexture;
     private bool videoFinished;
+    private Font menuFont;
+    private GUIStyle endButtonStyle;
+    private int lastButtonFontSize;
 
     private void Awake()
     {
@@ -195,7 +199,14 @@ public class JumpscareMove : MonoBehaviour
         else
         {
             videoFinished = true;
+            UnlockCursor();
         }
+    }
+
+    private void UnlockCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     private void DisablePlayerControl()
@@ -224,6 +235,53 @@ public class JumpscareMove : MonoBehaviour
     {
         videoFinished = true;
         DisablePlayerControl();
+        UnlockCursor();
+    }
+
+    private void EnsureEndScreenStyle()
+    {
+        if (menuFont == null)
+        {
+            menuFont = Resources.Load<Font>("DemonicFont");
+            if (menuFont == null)
+            {
+                menuFont = Font.CreateDynamicFontFromOSFont(
+                    new[] { "Chiller", "Viner Hand ITC", "Old English Text MT", "Blackadder ITC", "Georgia" },
+                    64
+                );
+            }
+        }
+
+        int fontSize = Mathf.Clamp(Mathf.RoundToInt(Screen.height * 0.065f), 32, 76);
+        if (endButtonStyle == null || lastButtonFontSize != fontSize)
+        {
+            lastButtonFontSize = fontSize;
+            endButtonStyle = new GUIStyle(GUI.skin.button)
+            {
+                font = menuFont,
+                fontSize = fontSize,
+                fontStyle = FontStyle.Bold,
+                alignment = TextAnchor.MiddleCenter,
+                padding = new RectOffset(0, 0, 0, 0),
+                margin = new RectOffset(0, 0, 0, 0),
+                border = new RectOffset(0, 0, 0, 0)
+            };
+            endButtonStyle.normal.background = null;
+            endButtonStyle.hover.background = null;
+            endButtonStyle.active.background = null;
+            endButtonStyle.focused.background = null;
+            endButtonStyle.normal.textColor = new Color(0.85f, 0.82f, 0.82f, 1f);
+            endButtonStyle.hover.textColor = new Color(0.9f, 0.08f, 0.08f, 1f);
+            endButtonStyle.active.textColor = new Color(0.55f, 0.02f, 0.02f, 1f);
+            endButtonStyle.focused.textColor = new Color(0.9f, 0.08f, 0.08f, 1f);
+        }
+    }
+
+    private bool DrawEndScreenButton(Rect rect, string text)
+    {
+        bool hovered = rect.Contains(Event.current.mousePosition);
+        string display = hovered ? $"> {text} <" : text;
+        return GUI.Button(rect, display, endButtonStyle);
     }
 
     private void OnGUI()
@@ -237,10 +295,34 @@ public class JumpscareMove : MonoBehaviour
 
         if (videoFinished)
         {
+            UnlockCursor();
+
             if (gameOverScreen != null)
             {
                 GUI.DrawTexture(fullScreen, gameOverScreen, ScaleMode.StretchToFill);
             }
+
+            EnsureEndScreenStyle();
+
+            float buttonWidth = Mathf.Max(360f, Screen.width * 0.3f);
+            float buttonHeight = Mathf.Max(52f, Screen.height * 0.085f);
+            float buttonSpacing = Mathf.Max(16f, Screen.height * 0.025f);
+            float centerX = (Screen.width - buttonWidth) * 0.5f;
+            float firstButtonY = Screen.height * 0.66f;
+
+            Rect playAgainRect = new Rect(centerX, firstButtonY, buttonWidth, buttonHeight);
+            Rect backToMenuRect = new Rect(centerX, firstButtonY + buttonHeight + buttonSpacing, buttonWidth, buttonHeight);
+
+            if (DrawEndScreenButton(playAgainRect, "Play Again?"))
+            {
+                MainMenu.RestartCurrentGame();
+            }
+
+            if (DrawEndScreenButton(backToMenuRect, "Back to menu"))
+            {
+                MainMenu.ReturnToMenu();
+            }
+
             return;
         }
 

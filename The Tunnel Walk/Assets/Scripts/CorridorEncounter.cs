@@ -17,7 +17,7 @@ public class CorridorEncounter : MonoBehaviour
     private float entranceSide;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    private static void ResetRunState()
+    public static void ResetRunState()
     {
         currentCorridor = null;
         differentPaintingIndices.Clear();
