@@ -7,6 +7,9 @@ public class CorridorLevelDisplay : MonoBehaviour
 
     private void OnGUI()
     {
+        if (MainMenu.IsMenuOpen || JumpscareMove.IsTriggered)
+            return;
+
         if (labelStyle == null)
         {
             labelStyle = new GUIStyle(GUI.skin.label)
