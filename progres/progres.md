@@ -1,0 +1,1 @@
+- dodanie ekranu głównego oraz podstawowych przycisków 
